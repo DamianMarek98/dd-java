@@ -13,6 +13,10 @@ public record Stage(String stageName, Set<Stage> dependencies, Set<ResourceName>
         this(name, new HashSet<>(), new HashSet<>(), Duration.ZERO);
     }
 
+    public Stage withDependencies(Set<Stage> dependencies) {
+        return new Stage(stageName, dependencies, resources, duration);
+    }
+
     public Stage dependsOn(Stage stage) {
         this.dependencies.add(stage);
         return this;
@@ -20,6 +24,10 @@ public record Stage(String stageName, Set<Stage> dependencies, Set<ResourceName>
 
     public String name() {
         return stageName;
+    }
+
+    public boolean hasAnyDependency() {
+        return !dependencies.isEmpty();
     }
 
     @Override

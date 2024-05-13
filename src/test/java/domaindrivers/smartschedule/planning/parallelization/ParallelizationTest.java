@@ -43,6 +43,26 @@ class ParallelizationTest {
     }
 
     @Test
+    void testSimpleDependencies2() {
+        //given
+        Stage stage1 = new Stage("Stage1");
+        Stage stage2 = new Stage("Stage2");
+        Stage stage3 = new Stage("Stage3");
+        Stage stage4 = new Stage("Stage4");
+        Stage stage5 = new Stage("Stage5");
+        stage2.dependsOn(stage1);
+        stage3.dependsOn(stage2);
+        stage4.dependsOn(stage3);
+        stage5.dependsOn(stage3);
+
+        //when
+        ParallelStagesList sortedStages = stageParallelization.of(Set.of(stage1, stage2, stage3, stage4, stage5));
+
+        //then
+        assertEquals(sortedStages.print(), "Stage1 | Stage2 | Stage3 | Stage4, Stage5");
+    }
+
+    @Test
     void cantBeDoneWhenThereIsACycle() {
         //given
         Stage stage1 = new Stage("Stage1");
