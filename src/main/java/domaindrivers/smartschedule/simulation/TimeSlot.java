@@ -1,5 +1,6 @@
 package domaindrivers.smartschedule.simulation;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -7,6 +8,10 @@ import java.time.ZoneId;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 record TimeSlot(Instant from, Instant to) {
+
+    public Duration getDuration() {
+        return Duration.between(from, to);
+    }
 
     static TimeSlot createDailyTimeSlotAtUTC(int year, int month, int day) {
         LocalDate thisDay = LocalDate.of(year, month, day);
